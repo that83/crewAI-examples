@@ -5,19 +5,18 @@ import requests
 from crewai import Agent, Task
 from langchain.tools import tool
 from unstructured.partition.html import partition_html
-
+from urllib.parse import quote_plus
 
 class BrowserTools():
 
   @tool("Scrape website content")
   def scrape_and_summarize_website(website):
     """Useful to scrape and summarize a website content"""
-    url = f"https://chrome.browserless.io/content?token={os.environ['BROWSERLESS_API_KEY']}"
-    payload = json.dumps({"url": website})
-    headers = {'cache-control': 'no-cache', 'content-type': 'application/json'}
-    response = requests.request("POST", url, headers=headers, data=payload)
-    elements = partition_html(text=response.text) # explain this
+    api_key = os.environ['SCRAPINGFISH_API_KEY']
+    url = quote_plus(website)
+    response = requests.get(f"https://scraping.narf.ai/api/v1/?api_key={api_key}&url={url}")
 
+    elements = partition_html(text=response.content)
     content = "\n\n".join([str(el) for el in elements])
     content = [content[i:i + 8000] for i in range(0, len(content), 8000)]
     summaries = []
