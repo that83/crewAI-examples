@@ -1,3 +1,5 @@
+import os
+
 from crewai import Agent
 from langchain_community.llms import OpenAI
 from langchain.chat_models import ChatOpenAI
