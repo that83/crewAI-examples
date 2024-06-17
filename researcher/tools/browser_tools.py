@@ -17,6 +17,7 @@ class BrowserTools():
     response = requests.get(f"https://scraping.narf.ai/api/v1/?api_key={api_key}&url={url}")
 
     elements = partition_html(text=response.content)
+    print(f"[debug][SCRAPINGFISH] {elements}")  # print out the results for debugging
     content = "\n\n".join([str(el) for el in elements])
     content = [content[i:i + 8000] for i in range(0, len(content), 8000)]
     summaries = []

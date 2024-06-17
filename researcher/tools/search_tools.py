@@ -24,6 +24,7 @@ class SearchTools():
       return "Sorry, I couldn't find anything about that, there could be an error with you serper api key."
     else:
       results = response.json()['organic']
+      print(f"[debug][serper] {results}")  # print out the results for debugging
       string = []
       for result in results[:top_result_to_return]:
         try:
