@@ -9,6 +9,7 @@ class SearchTools():
 
   @tool("Search the internet")
   def search_internet(query):
+    print(f"[debug][serper query: ] {query}")  # print out the results for debugging
     """Useful to search the internet
     about a a given topic and return relevant results"""
     top_result_to_return = 4
@@ -24,7 +25,7 @@ class SearchTools():
       return "Sorry, I couldn't find anything about that, there could be an error with you serper api key."
     else:
       results = response.json()['organic']
-      print(f"[debug][serper] {results}")  # print out the results for debugging
+      print(f"[debug][serper result: ] {results}")  # print out the results for debugging
       string = []
       for result in results[:top_result_to_return]:
         try:

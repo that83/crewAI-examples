@@ -12,12 +12,13 @@ class BrowserTools():
   @tool("Scrape website content")
   def scrape_and_summarize_website(website):
     """Useful to scrape and summarize a website content"""
+    print(f"[debug][SCRAPINGFISH is called with:] {website}")  # print out the results for debugging
     api_key = os.environ['SCRAPINGFISH_API_KEY']
     url = quote_plus(website)
     response = requests.get(f"https://scraping.narf.ai/api/v1/?api_key={api_key}&url={url}")
 
     elements = partition_html(text=response.content)
-    print(f"[debug][SCRAPINGFISH] {elements}")  # print out the results for debugging
+    print(f"[debug][SCRAPINGFISH return: ] {elements}")  # print out the results for debugging
     content = "\n\n".join([str(el) for el in elements])
     content = [content[i:i + 8000] for i in range(0, len(content), 8000)]
     summaries = []
