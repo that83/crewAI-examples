@@ -12,6 +12,7 @@ class SearchTools():
     """Useful to search the internet
     about a a given topic and return relevant results"""
     print(f"[debug][serper query: ] {query}")  # print out the results for debugging
+    tempString = "[DEBUG][search_internet] in 1".join,+ "\n"
     top_result_to_return = 4
     url = "https://google.serper.dev/search"
     payload = json.dumps({"q": query})
@@ -26,7 +27,9 @@ class SearchTools():
     else:
       results = response.json()['organic']
       print(f"[debug][serper result: ] {results}")  # print out the results for debugging
+      tempString = tempString.join("[DEBUG][search_internet] in 2", "\n")
       string = []
+      string.append(tempString)
       for result in results[:top_result_to_return]:
         try:
           string.append('\n'.join([

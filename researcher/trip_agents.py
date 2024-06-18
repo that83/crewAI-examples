@@ -2,8 +2,8 @@ import os
 
 from crewai import Agent
 from langchain_community.llms import OpenAI
-from langchain_community.chat_models import ChatOpenAI
-#from langchain.chat_models import ChatOpenAI
+#from langchain_community.chat_models import ChatOpenAI
+from langchain.chat_models import ChatOpenAI
 
 from tools.browser_tools import BrowserTools
 from tools.calculator_tools import CalculatorTools
