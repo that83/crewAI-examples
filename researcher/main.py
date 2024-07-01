@@ -6,12 +6,6 @@ from trip_tasks import TripTasks
 from dotenv import load_dotenv
 load_dotenv()
 
-# llm = ChatOpenAI(openai_api_base=os.environ.get("OPENAI_API_BASE_URL", "https://api.openai.com/v1"),
-#                         openai_api_key=os.environ.get("OPENAI_API_KEY"),
-#                         temperature=0.1,                        
-#                         model_name=os.environ.get("MODEL_NAME", "gpt-3.5-turbo"),
-#                         top_p=0.3)
-
 class TripCrew:
 
   def __init__(self, origin, cities, date_range, interests):

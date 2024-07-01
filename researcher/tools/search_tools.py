@@ -11,8 +11,6 @@ class SearchTools():
   def search_internet(query):
     """Useful to search the internet
     about a a given topic and return relevant results"""
-    print(f"[debug][serper query: ] {query}")  # print out the results for debugging
-    tempString = "[DEBUG][search_internet] in 1".join,+ "\n"
     top_result_to_return = 4
     url = "https://google.serper.dev/search"
     payload = json.dumps({"q": query})
@@ -26,10 +24,7 @@ class SearchTools():
       return "Sorry, I couldn't find anything about that, there could be an error with you serper api key."
     else:
       results = response.json()['organic']
-      print(f"[debug][serper result: ] {results}")  # print out the results for debugging
-      tempString = tempString.join("[DEBUG][search_internet] in 2", "\n")
       string = []
-      string.append(tempString)
       for result in results[:top_result_to_return]:
         try:
           string.append('\n'.join([

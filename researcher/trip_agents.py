@@ -2,7 +2,6 @@ import os
 
 from crewai import Agent
 from langchain_community.llms import OpenAI
-#from langchain_community.chat_models import ChatOpenAI
 from langchain.chat_models import ChatOpenAI
 
 from tools.browser_tools import BrowserTools
@@ -12,7 +11,7 @@ from tools.search_tools import SearchTools
 llm = ChatOpenAI(openai_api_base=os.environ.get("OPENAI_API_BASE_URL", "https://api.openai.com/v1"),
                         openai_api_key=os.environ.get("OPENAI_API_KEY"),
                         temperature=0.1,                        
-                        model_name=os.environ.get("MODEL_NAME", "gpt-3.5-turbo"),
+                        model_name=os.environ.get("MODEL_NAME", "gpt-4"),
                         top_p=0.3)
 
 class TripAgents():

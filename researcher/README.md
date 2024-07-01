@@ -63,6 +63,20 @@ The CrewAI framework supports integration with local models, such as Ollama, for
 - **Install Ollama**: Ensure that Ollama is properly installed in your environment. Follow the installation guide provided by Ollama for detailed instructions.
 - **Configure Ollama**: Set up Ollama to work with your local model. You will probably need to [tweak the model using a Modelfile](https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md), I'd recommend adding `Observation` as a stop word and playing with `top_p` and `temperature`.
 
+========
+FROM llama3
+# sets the temperature to 1 [higher is more creative, lower is more coherent]
+PARAMETER temperature 1
+# sets the context window size to 4096, this controls how many tokens the LLM can use as context to generate the next token
+PARAMETER num_ctx 4096
+PARAMETER stop "Observation"
+
+# sets a custom system message to specify the behavior of the chat assistant
+SYSTEM You are a professional researcher, acting as an assistant.
+========
+
+ollama create crewai-llama3 -f ./Modelfile
+
 ### Integrating Ollama with CrewAI
 - Instantiate Ollama Model: Create an instance of the Ollama model. You can specify the model and the base URL during instantiation. For example:
 
