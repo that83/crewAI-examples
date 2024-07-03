@@ -1,52 +1,46 @@
 from crewai import Crew
 from textwrap import dedent
-from trip_agents import TripAgents
-from trip_tasks import TripTasks
+from researcher.research_agents import ResearchAgents
+from researcher.research_tasks import ResearchTasks
 
 from dotenv import load_dotenv
 load_dotenv()
 
 class TripCrew:
 
-  def __init__(self, origin, cities, date_range, interests):
-    self.cities = cities
-    self.origin = origin
-    self.interests = interests
-    self.date_range = date_range
+  def __init__(self, request, specific_requirements):
+    self.request = request
+    self.specific_requirements = specific_requirements
 
   def run(self):
-    agents = TripAgents()
-    tasks = TripTasks()
+    agents = ResearchAgents()
+    tasks = ResearchTasks()
 
-    city_selector_agent = agents.city_selection_agent()
-    local_expert_agent = agents.local_expert()
-    travel_concierge_agent = agents.travel_concierge()
+    request_manager_agent = agents.request_manager_agent()
+    technical_expert_agent = agents.technical_expert_agent()
+    business_analyst_agent = agents.business_analyst_agent()
 
     identify_task = tasks.identify_task(
-      city_selector_agent,
-      self.origin,
-      self.cities,
-      self.interests,
-      self.date_range
+      request_manager_agent,
+      self.request,
+      self.specific_requirements
     )
     gather_task = tasks.gather_task(
-      local_expert_agent,
-      self.origin,
-      self.interests,
-      self.date_range
+      technical_expert_agent,
+      self.request,
+      self.specific_requirements
     )
-    plan_task = tasks.plan_task(
-      travel_concierge_agent, 
-      self.origin,
-      self.interests,
-      self.date_range
+    expand_task = tasks.expand_task(
+      business_analyst_agent, 
+      self.request,
+      self.specific_requirements
     )
 
     crew = Crew(
       agents=[
-        city_selector_agent, local_expert_agent, travel_concierge_agent
+        request_manager_agent, technical_expert_agent, business_analyst_agent
       ],
-      tasks=[identify_task, gather_task, plan_task],
+      tasks=[identify_task, gather_task, expand_task],
       verbose=True
     )
 
@@ -54,28 +48,21 @@ class TripCrew:
     return result
 
 if __name__ == "__main__":
-  print("## Welcome to Trip Planner Crew")
+  print("## Welcome to Research Crew")
   print('-------------------------------')
-  location = input(
+  request = input(
     dedent("""
-      From where will you be traveling from?
+      What do you want to research?
     """))
-  cities = input(
+    
+  specific_requirements = input(
     dedent("""
-      What are the cities options you are interested in visiting?
-    """))
-  date_range = input(
-    dedent("""
-      What is the date range you are interested in traveling?
-    """))
-  interests = input(
-    dedent("""
-      What are some of your high level interests and hobbies?
+      Any specific requirements?
     """))
   
-  trip_crew = TripCrew(location, cities, date_range, interests)
+  trip_crew = TripCrew(request, specific_requirements)
   result = trip_crew.run()
   print("\n\n########################")
-  print("## Here is you Trip Plan")
+  print("## Here is your result:")
   print("########################\n")
   print(result)
