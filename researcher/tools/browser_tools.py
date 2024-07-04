@@ -1,6 +1,5 @@
 import json
 import os
-
 import requests
 from crewai import Agent, Task
 from langchain.tools import tool
@@ -40,9 +39,10 @@ class BrowserTools():
         task = Task(
             agent=agent,
             description=
-            f'Analyze and summarize the content bellow, make sure to include the most relevant information in the summary, return only the summary nothing else.\n\nCONTENT\n----------\n{chunk}'
+            f'Analyze and summarize the content below, make sure to include the most relevant information in the summary, return only the summary nothing else.\n\nCONTENT\n----------\n{chunk}'
         )
         summary = task.execute()
-        summaries.append(summary)
+        print(f"[debug][summary return: ] Content scrapped from website {website} :\n{summary}")  # print out the results for debugging
+        summaries.append(f"Content scrapped from website {website} :\n{summary}")
     print(f"[debug][summaries return: ] {summaries}")  # print out the results for debugging
     return "\n\n".join(summaries)

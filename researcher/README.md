@@ -23,6 +23,7 @@ It uses GPT-4 by default so you should have access to that to run it.
 not to, and by doing so it will cost you money.*
 
 - **Configure Environment**: Copy ``.env.example` and set up the environment variables for [Browseless](https://www.browserless.io/), [Serper](https://serper.dev/) and [OpenAI](https://platform.openai.com/api-keys)
+- **Install poetry**: Run `pip install poetry`.
 - **Install Dependencies**: Run `poetry install --no-root`.
 - **Execute the Script**: Run `poetry run python main.py` and input your idea.
 
