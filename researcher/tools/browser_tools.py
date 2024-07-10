@@ -5,6 +5,13 @@ from crewai import Agent, Task
 from langchain.tools import tool
 from unstructured.partition.html import partition_html
 from urllib.parse import quote_plus
+from langchain.chat_models import ChatOpenAI
+
+llm = ChatOpenAI(openai_api_base=os.environ.get("OPENAI_API_BASE_URL", "https://api.openai.com/v1"),
+                        openai_api_key=os.environ.get("OPENAI_API_KEY"),
+                        temperature=0.1,                        
+                        model_name=os.environ.get("MODEL_NAME", "gpt-4"),
+                        top_p=0.3)
 
 class BrowserTools():
 
@@ -27,7 +34,7 @@ class BrowserTools():
       content = "\n\n".join([str(el) for el in elements])
       print(f"[debug][content return: ] {content}")  # print out the results for debugging
       content = [content[i:i + 8000] for i in range(0, len(content), 8000)]
-      
+      summaries.append(f"Content scrapped from website {website} :\n")
       for chunk in content:
         agent = Agent(
             role='Principal Researcher',
@@ -35,6 +42,7 @@ class BrowserTools():
             'Do amazing researches and summaries based on the content you are working with',
             backstory=
             "You're a Principal Researcher at a big company and you need to do a research about a given topic.",
+            llm=llm,
             allow_delegation=False)
         task = Task(
             agent=agent,
@@ -42,7 +50,7 @@ class BrowserTools():
             f'Analyze and summarize the content below, make sure to include the most relevant information in the summary, return only the summary nothing else.\n\nCONTENT\n----------\n{chunk}'
         )
         summary = task.execute()
-        print(f"[debug][summary return: ] Content scrapped from website {website} :\n{summary}")  # print out the results for debugging
-        summaries.append(f"Content scrapped from website {website} :\n{summary}")
+        print(f"[debug][summary return: ] {summary}")  # print out the results for debugging
+        summaries.append(f"{summary}")
     print(f"[debug][summaries return: ] {summaries}")  # print out the results for debugging
     return "\n\n".join(summaries)
