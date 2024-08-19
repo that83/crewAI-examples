@@ -22,11 +22,11 @@ class BrowserTools():
     api_key = os.environ['SCRAPINGFISH_API_KEY']
     # If websites is a string, convert it to a list
     if isinstance(websites, str):
-      websites = [websites]
+      websites = websites.split(",")
     summaries = []
     # Iterate over the list of websites
     for website in websites:
-      url = quote_plus(website)
+      url = quote_plus(website.strip())
       print(f"[debug][requesting url:] {url}") 
       response = requests.get(f"https://scraping.narf.ai/api/v1/?api_key={api_key}&url={url}")
 
