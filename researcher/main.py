@@ -1,7 +1,7 @@
 from crewai import Crew
 from textwrap import dedent
-from researcher.research_agents import ResearchAgents
-from researcher.research_tasks import ResearchTasks
+from research_agents import ResearchAgents
+from research_tasks import ResearchTasks
 
 from dotenv import load_dotenv
 load_dotenv()

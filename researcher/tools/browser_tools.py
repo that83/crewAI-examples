@@ -5,6 +5,13 @@ from crewai import Agent, Task
 from langchain.tools import tool
 from unstructured.partition.html import partition_html
 from urllib.parse import quote_plus
+from langchain.chat_models import ChatOpenAI
+
+llm = ChatOpenAI(openai_api_base=os.environ.get("OPENAI_API_BASE_URL", "https://api.openai.com/v1"),
+                        openai_api_key=os.environ.get("OPENAI_API_KEY"),
+                        temperature=0.1,                        
+                        model_name=os.environ.get("MODEL_NAME", "gpt-3.5-turbo-1106"),
+                        top_p=0.3)
 
 class BrowserTools():
 
@@ -26,23 +33,22 @@ class BrowserTools():
     
       content = "\n\n".join([str(el) for el in elements])
       print(f"[debug][content return: ] {content}")  # print out the results for debugging
-      content = [content[i:i + 8000] for i in range(0, len(content), 8000)]
-      
+      content = [content[i:i + 16000] for i in range(0, len(content), 16000)]
+      summaries.append(f"Content scrapped from website {website} :\n")
       for chunk in content:
         agent = Agent(
             role='Principal Researcher',
-            goal=
-            'Do amazing researches and summaries based on the content you are working with',
-            backstory=
-            "You're a Principal Researcher at a big company and you need to do a research about a given topic.",
+            goal='Rephrase content, eliminate redundancy, and maintain all essential information',
+            backstory="You're a Principal Researcher at a big company and you need to rephrase a given content.",
+            llm=llm,
             allow_delegation=False)
         task = Task(
             agent=agent,
             description=
-            f'Analyze and summarize the content below, make sure to include the most relevant information in the summary, return only the summary nothing else.\n\nCONTENT\n----------\n{chunk}'
+            f'The content provided below was scraped from a website and converted from HTML, so it may contain things should be removed: unusual characters, broken forms, website menu, website header, website footer. Please infer the original content and reformat it for readability, removing any unnecessary characters, remove any redundant information. Do not summary the content. Return only the rephrased content nothing else.\n\nCONTENT\n----------\n{chunk}'
         )
-        summary = task.execute()
-        print(f"[debug][summary return: ] Content scrapped from website {website} :\n{summary}")  # print out the results for debugging
-        summaries.append(f"Content scrapped from website {website} :\n{summary}")
+        rephrased_content = task.execute()
+        print(f"[debug][summary return: ] {rephrased_content}")  # print out the results for debugging
+        summaries.append(f"{rephrased_content}")
     print(f"[debug][summaries return: ] {summaries}")  # print out the results for debugging
     return "\n\n".join(summaries)
