@@ -26,7 +26,7 @@ class BrowserTools():
     summaries = []
     # Iterate over the list of websites
     for website in websites:
-      url = quote_plus(website.strip())
+      url = quote_plus(website.strip().strip('"'))
       print(f"[debug][requesting url:] {url}") 
       response = requests.get(f"https://scraping.narf.ai/api/v1/?api_key={api_key}&url={url}")
 
