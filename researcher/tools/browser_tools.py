@@ -23,7 +23,7 @@ class BrowserTools():
     # If websites is a string, convert it to a list
     if isinstance(websites, str):
       websites = websites.split(",")
-    summaries = ""
+    summaries = []
     # Iterate over the list of websites
     for website in websites:
       url = quote_plus(website.strip().strip('"').replace("'", ""))
@@ -40,4 +40,4 @@ class BrowserTools():
       #for chunk in content:
       #  summaries.append(chunk)
     print(f"[debug][rephrases return: ] {summaries}")  # print out the results for debugging
-    return summaries
+    return "\n".join(summaries)
