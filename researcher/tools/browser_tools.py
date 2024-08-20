@@ -23,10 +23,10 @@ class BrowserTools():
     # If websites is a string, convert it to a list
     if isinstance(websites, str):
       websites = websites.split(",")
-    summaries = []
+    summaries = ""
     # Iterate over the list of websites
     for website in websites:
-      url = quote_plus(website.strip().strip('"'))
+      url = quote_plus(website.strip().strip('"').replace("'", ""))
       print(f"[debug][requesting url:] {url}") 
       response = requests.get(f"https://scraping.narf.ai/api/v1/?api_key={api_key}&url={url}")
 
@@ -34,22 +34,10 @@ class BrowserTools():
     
       content = "\n\n".join([str(el) for el in elements])
       print(f"[debug][content return: ] {content}")  # print out the results for debugging
-      content = [content[i:i + 16000] for i in range(0, len(content), 16000)]
+      #content = [content[i:i + 16000] for i in range(0, len(content), 16000)]
       summaries.append(f"Content scrapped from website {website} :\n")
-      for chunk in content:
-        agent = Agent(
-            role='Principal Researcher',
-            goal='Rephrase content, eliminate redundancy, and maintain all essential information',
-            backstory="You're a Principal Researcher at a big company and you need to rephrase a given content.",
-            llm=llm,
-            allow_delegation=False)
-        task = Task(
-            agent=agent,
-            description=
-            f'The content provided below was scraped from a website and converted from HTML, so it may contain things should be removed: unusual characters, broken forms, website menu, website header, website footer. Please infer the original content and reformat it for readability, removing any unnecessary characters, remove any redundant information. Do not summary the content. Return only the rephrased content nothing else.\n\nCONTENT\n----------\n{chunk}'
-        )
-        rephrased_content = task.execute()
-        print(f"[debug][summary return: ] {rephrased_content}")  # print out the results for debugging
-        summaries.append(f"{rephrased_content}")
-    print(f"[debug][summaries return: ] {summaries}")  # print out the results for debugging
-    return "\n\n".join(summaries)
+      summaries.append(content)
+      #for chunk in content:
+      #  summaries.append(chunk)
+    print(f"[debug][rephrases return: ] {summaries}")  # print out the results for debugging
+    return summaries
