@@ -33,13 +33,15 @@ class BrowserTools():
       elements = partition_html(text=response.content)
     
       content = "\n\n".join([str(el) for el in elements])
-      print(f"[debug][content return: ] {content}")  # print out the results for debugging
+      # Remove unwanted characters
+      content = content.replace('\n', '').replace('\t', '').replace('\r', '').replace('\f', '').replace('\v', '').strip()
+      #print(f"[debug][content return: ] {content}")  # print out the results for debugging
       #content = [content[i:i + 16000] for i in range(0, len(content), 16000)]
       summaries.append(f"Content scrapped from website {website} :\n")
       summaries.append(content)
       #for chunk in content:
       #  summaries.append(chunk)
-    print(f"[debug][rephrases return: ] {summaries}")  # print out the results for debugging
+    #print(f"[debug][rephrases return: ] {summaries}")  # print out the results for debugging
     # Write the scraped content to a file
     with open("webdata.txt", "w") as file:
       file.write("\n".join(summaries))
