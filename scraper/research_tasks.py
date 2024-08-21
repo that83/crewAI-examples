@@ -8,7 +8,7 @@ class ResearchTasks():
     return Task(description=dedent(f"""
       Purpose of this process is to create search phrases based on the requirements/request. The search phrases will be used to search the internet for relevant information.
       Step 0: Break down the requirements/request into searching keywords. Then, for each keyword, create a search phrase.
-      Step 1: Return the list of search phrases.
+      Step 1: Return the list of search phrases (maximum 5 search phrases).
       
       Original Research Request: {request}
       Original Specific Requirements: {specific_requirements}
