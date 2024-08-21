@@ -28,7 +28,7 @@ class TripCrew:
       self.request,
       self.specific_requirements
     )
-    search_and_filter_results_task = tasks.search_and_filter_results(
+    search_and_filter_results_task = tasks.search_and_return_results(
       search_agent
     )
 
