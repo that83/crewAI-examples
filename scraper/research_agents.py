@@ -26,9 +26,9 @@ class ResearchAgents():
         )
   def search_agent(self):
     return Agent(
-            role='URL Validator',
-            goal='Search for URLs related to the keywords and then filter out unreliable sources from the result urls.',
-            backstory='An expert in searching for URLs related to keywords and filtering out unreliable sources.',
+            role='Internet Searcher',
+            goal='Search for URLs related to the keywords.',
+            backstory='An expert in searching for URLs related to keywords.',
             tools=[
                 SearchTools.search_internet,
             ],
