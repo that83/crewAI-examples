@@ -17,27 +17,22 @@ class ResearchTasks():
       backstory='An expert in project management with a strong background in creating search phrases based on requirements and requests.')
 
 
-  def search_and_filter_results(self, agent, search_phrases):
+  def search_and_filter_results(self, agent):
     return Task(description=dedent(f"""
       Purpose of this process is to search the internet using the provided search phrases and filter the search results.
       Step 0: Search the internet using the search phrases.
       Step 1: Check the reliability of the search results based on the URLs.
       Step 2: Filter out search results related to sales, advertising, or service offerings.
       Step 3: Return the filtered search results.
-      
-      Search Phrases: {search_phrases}
       """),
       agent=agent,
       backstory='An expert in project management with a strong background in internet searching, finding out the reliability of search results, and filtering search results.')
 
 
-  def scrape_and_save_to_file(self, agent, search_result_urls):
+  def scrape_and_save_to_file(self, agent):
     return Task(description=dedent(f"""
       Purpose of this process is to scrape the data from the search results and save it to a file.
       Step 0: Use a scraping tool to extract data from the search results. In this step, scraping tool will also save the scraped data to file.
-
-      
-      Search Results: {search_result_urls}
       """),
       agent=agent,
       backstory='An expert in project management with a strong background in using scraping tools.')
