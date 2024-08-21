@@ -27,7 +27,7 @@ class TripCrew:
       self.specific_requirements
     )
 
-    create_search_phrases_task.run()
+
     crew_create = Crew(
       agents=[
         request_manager_agent
