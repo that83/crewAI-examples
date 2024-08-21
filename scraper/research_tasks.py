@@ -21,12 +21,11 @@ class ResearchTasks():
     return Task(description=dedent(f"""
       Purpose of this process is to search the internet using the provided search phrases and filter the search results.
       Step 0: Search the internet using the search phrases.
-      Step 1: Check the reliability of the search results base on the content of "Snippet" and "Title" part.
-      Step 2: Filter out search results related to sales, advertising, or service offerings.
-      Step 3: Return the filtered search results.
+      Step 1: Do not need to validate the urls. Just check the reliability of the search results base on the content of "Snippet" and "Title" part. Filter out search results related to sales, advertising, or service offerings.
+      Step 2: Return the filtered search results.
       """),
       agent=agent,
-      backstory='An expert in project management with a strong background in internet searching, finding out the reliability of search results, and filtering search results.')
+      backstory='An expert in project management with a strong background in internet searching, finding out the reliability of search results without validate those urls, and filtering search results.')
 
 
   def scrape_and_save_to_file(self, agent):
