@@ -21,7 +21,7 @@ class ResearchTasks():
     return Task(description=dedent(f"""
       Purpose of this process is to search the internet using the provided search phrases and filter the search results.
       Step 0: Search the internet using the search phrases.
-      Step 1: Check the reliability of the search results based on the URLs.
+      Step 1: Check the reliability of the search results base on the content of "Snippet" and "Title" part.
       Step 2: Filter out search results related to sales, advertising, or service offerings.
       Step 3: Return the filtered search results.
       """),
