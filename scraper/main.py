@@ -12,27 +12,37 @@ class TripCrew:
   def __init__(self, request, specific_requirements):
     self.request = request
     self.specific_requirements = specific_requirements
+    #self.search_phrases = []
+    #self.search_result_urls = []
 
   def run(self):
     agents = ResearchAgents()
     tasks = ResearchTasks()
 
     request_manager_agent = agents.request_manager_agent()
-    #technical_expert_agent = agents.technical_expert_agent()
-    #business_analyst_agent = agents.business_analyst_agent()
+    search_agent = agents.search_agent()
+    scrape_agent = agents.scrape_agent()
 
-    identify_task = tasks.identify_task(
+    create_search_phrases_task = tasks.create_search_phrases(
       request_manager_agent,
       self.request,
       self.specific_requirements
     )
-    
+    search_and_filter_results_task = tasks.search_and_filter_results(
+      search_agent,
+      create_search_phrases_task.result
+    )
+
+    scrape_and_save_to_file_task = tasks.scrape_and_save_to_file(
+      scrape_agent,
+      search_and_filter_results_task.result
+    )
 
     crew = Crew(
       agents=[
-        request_manager_agent
+        request_manager_agent, search_agent, scrape_agent
       ],
-      tasks=[identify_task],
+      tasks=[create_search_phrases_task, search_and_filter_results_task, scrape_and_save_to_file_task],
       verbose=True
     )
 

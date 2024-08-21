@@ -17,38 +17,36 @@ llm = ChatOpenAI(openai_api_base=os.environ.get("OPENAI_API_BASE_URL", "https://
 class ResearchAgents():
   def request_manager_agent(self):
     return Agent(
-        role='Request Manager',
-        goal='Break down the research request into smaller parts, think of additional useful requirements, search the internet, check the reliability based on the URLs of the search results. If they seem related to sales, advertising, or service offerings, skip them. If they appear reliable and objective, use a tool to scrape the data and save it to a file. Continue this process to scrape as much data as possible. The data will be analyzed in another application.',
-        backstory='An expert in project management with a strong background in organizing, internet searching, finding out the reliability of search results, passing URLs to the scraping tool, and saving the data to a file. Continues to scrape as much data as possible, which will be analyzed in another application.',
-        tools=[
-            SearchTools.search_internet,
-            BrowserTools.scrape_and_write_to_file,
-        ],
-        llm=llm,
-        verbose=True)
-
-  def technical_expert_agent(self):
+            role='Keyword Generator',
+            goal='Generate relevant keywords based on the user request. Prioritize reputable sources such as Reddit, etc.',
+            backstory='An expert in generating keywords based on user requests. Prioritizes reputable sources for better search results.',
+            tools=[],
+            llm=llm,
+            verbose=True
+        )
+  def search_agent(self):
     return Agent(
-        role='Technical Expert',
-        goal='Provide in-depth research and answers on specific technical aspects or techniques as requested by the Request Manager.',
-        backstory=
-        'A specialist in technical research with extensive knowledge in various fields.',
-        tools=[
-            SearchTools.search_internet,
-            BrowserTools.scrape_and_summarize_website,
-        ],
-        llm=llm,
-        verbose=True)
-
-  def business_analyst_agent(self):
+            role='URL Validator',
+            goal='Search for URLs related to the keywords and then filter out unreliable sources from the result urls.',
+            backstory='An expert in searching for URLs related to keywords and filtering out unreliable sources.',
+            tools=[
+                SearchTools.search_internet,
+            ],
+            llm=llm,
+            verbose=True
+        )
+  
+  def scrape_agent(self):
     return Agent(
-        role='Business Analyst',
-        goal='Evaluate and critique the responses from the Technical Expert from a business perspective, considering factors such as cost, time, reliability, and providing out-of-the-box ideas for better research outcomes.',
-        backstory=
-        'An experienced business analyst with a keen eye for cost-benefit analysis, market trends, and innovative business strategies.',
-        tools=[
-            SearchTools.search_internet,
-            BrowserTools.scrape_and_summarize_website,
-        ],
-        llm=llm,
-        verbose=True)
+            role='Data Scraper',
+            goal='Scrape data from the final list of URLs.',
+            backstory='An expert in scraping data from the final list of URLs.',
+            tools=[
+                BrowserTools.scrape_and_write_to_file,
+            ],
+            llm=llm,
+            verbose=True
+        )
+    
+
+  

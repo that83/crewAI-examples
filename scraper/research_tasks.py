@@ -4,22 +4,45 @@ from datetime import date
 
 
 class ResearchTasks():
-  def identify_task(self, agent, request, specific_requirements):
+  def create_search_phrases(self, agent, request, specific_requirements):
     return Task(description=dedent(f"""
-      Purpose of this process to scrape as much data as possible. The scraped data will be saved to file and analyzed in another application.
-      Step 0: Break down the requirements/request into searching keywords. Then, for each keyword, perform the following steps:
-      Step 1: Search the internet and check the reliability based on the URLs of the search results.
-      Step 2: Pick the search results that seem reliable and objective (Skip any related to sales, advertising, or service offerings.)
-      Step 3: Use tool to scrape the data of Step 2's url(s) and save it to a file.                             
-      Step 4: After obtaining the results, quickly check its "Snippet", think of additional useful requirements. Loop back to Step 0 until you can not think of any more keywords.
-
+      Purpose of this process is to create search phrases based on the requirements/request. The search phrases will be used to search the internet for relevant information.
+      Step 0: Break down the requirements/request into searching keywords. Then, for each keyword, create a search phrase.
+      Step 1: Return the list of search phrases.
+      
       Original Research Request: {request}
       Original Specific Requirements: {specific_requirements}
       """),
       agent=agent,
-      backstory='An expert in project management with a strong background in organizing, internet searching, finding out the reliability of search results, passing URLs to the scraping tool, and saving the data to a file. Continues to scrape as much data as possible, which will be analyzed in another application.')
+      backstory='An expert in project management with a strong background in creating search phrases based on requirements and requests.')
+
+
+  def search_and_filter_results(self, agent, search_phrases):
+    return Task(description=dedent(f"""
+      Purpose of this process is to search the internet using the provided search phrases and filter the search results.
+      Step 0: Search the internet using the search phrases.
+      Step 1: Check the reliability of the search results based on the URLs.
+      Step 2: Filter out search results related to sales, advertising, or service offerings.
+      Step 3: Return the filtered search results.
+      
+      Search Phrases: {search_phrases}
+      """),
+      agent=agent,
+      backstory='An expert in project management with a strong background in internet searching, finding out the reliability of search results, and filtering search results.')
+
+
+  def scrape_and_save_to_file(self, agent, search_result_urls):
+    return Task(description=dedent(f"""
+      Purpose of this process is to scrape the data from the search results and save it to a file.
+      Step 0: Use a scraping tool to extract data from the search results. In this step, scraping tool will also save the scraped data to file.
+
+      
+      Search Results: {search_result_urls}
+      """),
+      agent=agent,
+      backstory='An expert in project management with a strong background in using scraping tools.')
 
 
   def __tip_section(self):
-    return "If you do your BEST WORK, I'll tip you \$100!"
+    return "If you do your BEST WORK, I'll tip you $100!"
   
