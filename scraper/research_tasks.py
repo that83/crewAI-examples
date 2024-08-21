@@ -14,23 +14,28 @@ class ResearchTasks():
       Original Specific Requirements: {specific_requirements}
       """),
       agent=agent,
-      backstory='An expert in project management with a strong background in creating search phrases based on requirements and requests.')
+      backstory='An expert in project management with a strong background in creating search phrases based on requirements and requests.',
+      expected_output=['A list of the top 5 search phrases.'])
 
 
-  def search_and_return_results(self, agent):
+  def search_and_return_results(self, agent, search_phrases):
     return Task(description=dedent(f"""
       Purpose of this process is to search the internet using the provided search phrases and filter the search results.
-      Step 1: Search the internet using the search phrases.
+                                  
+      Step 1: Search the internet using the search phrases: {search_phrases}.
       Step 2: Return the search results.
       """),
       agent=agent,
-      backstory='An expert in project management with a strong background in internet searching.')
+      backstory='An expert in project management with a strong background in internet searching.',
+      expected_output=['A list of all URLs from the search results.'])
 
 
-  def scrape_and_save_to_file(self, agent):
+  def scrape_and_save_to_file(self, agent, search_result_urls):
     return Task(description=dedent(f"""
-      Purpose of this process is to scrape the data from the search results and save it to a file.
-      Step 0: Use a scraping tool to extract data from the search results. In this step, scraping tool will also save the scraped data to file.
+      Purpose of this process is to scrape the data from the search result urls and save it to a file.
+      
+      Step 0: Use a scraping tool to extract data from the search result urls. In this step, scraping tool will also save the scraped data to file.
+      Search result urls: {search_result_urls}
       """),
       agent=agent,
       backstory='An expert in project management with a strong background in using scraping tools.')

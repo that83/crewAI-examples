@@ -12,8 +12,6 @@ class TripCrew:
   def __init__(self, request, specific_requirements):
     self.request = request
     self.specific_requirements = specific_requirements
-    self.search_phrases = []
-    self.search_result_urls = []
 
   def run(self):
     agents = ResearchAgents()
@@ -28,23 +26,42 @@ class TripCrew:
       self.request,
       self.specific_requirements
     )
-    search_and_filter_results_task = tasks.search_and_return_results(
-      search_agent
-    )
 
-    scrape_and_save_to_file_task = tasks.scrape_and_save_to_file(
-      scrape_agent
-    )
-
-    crew = Crew(
+    create_search_phrases_task.run()
+    crew_create = Crew(
       agents=[
-        request_manager_agent, search_agent, scrape_agent
+        request_manager_agent
       ],
-      tasks=[create_search_phrases_task, search_and_filter_results_task, scrape_and_save_to_file_task],
+      tasks=[create_search_phrases_task],
       verbose=True
     )
+    result = crew_create.kickoff()
+    self.search_phrases = create_search_phrases_task.output
 
-    result = crew.kickoff()
+    search_and_filter_results_task = tasks.search_and_return_results(
+      search_agent, self.search_phrases
+    )
+    crew_search = Crew(
+      agents=[
+        search_agent
+      ],
+      tasks=[search_and_filter_results_task],
+      verbose=True
+    )
+    result = crew_search.kickoff()
+    self.search_result_urls = search_and_filter_results_task.output
+
+    scrape_and_save_to_file_task = tasks.scrape_and_save_to_file(
+      scrape_agent, self.search_result_urls
+    )
+    crew_crape = Crew(
+      agents=[
+        scrape_agent
+      ],
+      tasks=[scrape_and_save_to_file_task],
+      verbose=True
+    )
+    result = crew_crape.kickoff()
     return result
 
 if __name__ == "__main__":
