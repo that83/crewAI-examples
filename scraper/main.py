@@ -33,10 +33,10 @@ class TripCrew:
       tasks=[create_search_phrases_task],
       verbose=True
     )
-    result = crew_create.kickoff()
+    search_phrases = crew_create.kickoff()
     
-    print(result)
-    self.search_phrases = result
+    print(search_phrases)
+    self.search_phrases = search_phrases
 
     search_and_filter_results_task = tasks.search_and_return_results(
       search_agent, self.search_phrases
@@ -48,8 +48,8 @@ class TripCrew:
       tasks=[search_and_filter_results_task],
       verbose=True
     )
-    result = crew_search.kickoff()
-    self.search_result_urls = search_and_filter_results_task.output
+    result_urls = crew_search.kickoff()
+    self.search_result_urls = result_urls
 
     scrape_and_save_to_file_task = tasks.scrape_and_save_to_file(
       scrape_agent, self.search_result_urls
