@@ -34,13 +34,9 @@ class TripCrew:
       verbose=True
     )
     result = crew_create.kickoff()
-    print(f"Raw Output: {result.raw}")
-    if result.pydantic:
-        print(f"Pydantic Output: {result.pydantic}")
-    print(f"Tasks Output: {result.tasks_output}")
-    print(f"Output: {result.output}")
-
-    self.search_phrases = result.pydantic
+    
+    print(result)
+    self.search_phrases = result
 
     search_and_filter_results_task = tasks.search_and_return_results(
       search_agent, self.search_phrases
