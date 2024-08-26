@@ -5,6 +5,7 @@ from research_tasks import ResearchTasks
 
 from dotenv import load_dotenv
 import os
+import re
 load_dotenv()
 
 class TripCrew:
@@ -49,6 +50,7 @@ class TripCrew:
       verbose=True
     )
     result_urls = crew_search.kickoff()
+    result_urls = remove_duplicate_urls(result_urls)
     self.search_result_urls = result_urls
 
     scrape_and_save_to_file_task = tasks.scrape_and_save_to_file(
@@ -88,3 +90,22 @@ if __name__ == "__main__":
   print("## Here is your result:")
   print("########################\n")
   print(result)
+
+def remove_duplicate_urls(input_string):
+    lines = input_string.split('\n')
+    seen_urls = set()
+    result_lines = []
+    
+    url_pattern = re.compile(r'http[s]?://\S+')
+    
+    for line in lines:
+        match = url_pattern.search(line)
+        if match:
+            url = match.group(0)
+            if url not in seen_urls:
+                seen_urls.add(url)
+                result_lines.append(line)
+        else:
+            result_lines.append(line)
+    
+    return '\n'.join(result_lines)
